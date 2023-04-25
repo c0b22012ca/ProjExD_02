@@ -85,7 +85,6 @@ def main():
              for k,v in de.items():#kが押されたキー、ｖが移動方向
                 if key_lst[k]:
                     kk_rct.move_ip(-v[0], -v[1])#移動
-        #
         yoko , tate = check_bound(screen.get_rect(),bb_rect)
         if not yoko:
             vx *= -1
