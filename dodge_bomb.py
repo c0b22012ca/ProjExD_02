@@ -91,17 +91,16 @@ def main():
             vx *= -1
         if not tate:
             vy *= -1
-        if kk_rct.colliderect(bb_rect):
-            screen.blit(kk_img2,kk_rct)
-            clock.tick(0.1)
-            return
-        else:
-            screen.blit(kk_img, kk_rct)
+        screen.blit(kk_img, kk_rct)
         avx = vx*accs[min(tmr//1000, 9)]
         avy = vy*accs[min(tmr//1000, 9)]
         bb_img = bb_imgs[min(tmr//1000, 9)]
         bb_rect.move_ip(avx,avy)
         screen.blit(bb_img,bb_rect)
+        if  kk_rct.colliderect(bb_rect):
+            screen.blit(kk_img2,kk_rct)
+            clock.tick(0.1)
+            return
         pg.display.update()
         clock.tick(1000)
 
