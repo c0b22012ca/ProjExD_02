@@ -5,10 +5,24 @@ import sys
 import pygame as pg
 
 
-de = {pg.K_UP:((0,-1)),#移動の辞書
-          pg.K_DOWN:((0,+1)),
-          pg.K_LEFT:((-1,0)),
-          pg.K_RIGHT:((+1,0))}
+de = {pg.K_UP:(0,-1),#移動の辞書
+          pg.K_DOWN:(0,+1),
+          pg.K_LEFT:(-1,0),
+          pg.K_RIGHT:(+1,0)}
+
+
+kk_img = pg.image.load("fig/3.png")
+kk_imgr = pg.transform.flip(kk_img,True,False)
+
+de2 = {(0,-1):pg.transform.rotozoom(kk_imgr, 90, 2.0),
+       (+1,-1):pg.transform.rotozoom(kk_imgr, 45, 2.0),
+       (+1,0):pg.transform.rotozoom(kk_imgr, 0, 2.0),
+       (+1,+1):pg.transform.rotozoom(kk_img, 135, 2.0),
+       (0,+1):pg.transform.rotozoom(kk_img, 90, 2.0),
+       (-1,+1):pg.transform.rotozoom(kk_img, 135, 2.0),
+       (-1,0):pg.transform.rotozoom(kk_img, 0, 2.0),
+       (-1,-1):pg.transform.rotozoom(kk_img, 45, 2.0),
+       }
 
 
 def check_bound(screen_rect: pg.rect,obj_rect:  pg.rect) -> tuple[bool,bool]: 
@@ -55,12 +69,16 @@ def main():
                 return 0
 
         tmr += 1
-
+        screen.blit(bg_img, [0, 0])
         key_lst = pg.key.get_pressed()
         for k,v in de.items():#kが押されたキー、ｖが移動方向
             if key_lst[k]:
                 kk_rct.move_ip(v)#移動
-
+                for mk,mv in de2.items():
+                    if (v[0],v[1]) == mk:
+                        kk_img2=mv
+                        screen.blit(kk_img2, kk_rct)
+                        
         if check_bound(screen.get_rect(),kk_rct) != (True,True):
              for k,v in de.items():#kが押されたキー、ｖが移動方向
                 if key_lst[k]:
@@ -71,8 +89,6 @@ def main():
             vx *= -1
         if not tate:
             vy *= -1
-        screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, kk_rct)
         screen.blit(bb_img,bb_rect)
         if kk_rct.colliderect(bb_rect):
             return
