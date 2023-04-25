@@ -74,6 +74,8 @@ def main():
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)
         screen.blit(bb_img,bb_rect)
+        if kk_rct.colliderect(bb_rect):
+            return
         pg.display.update()
         clock.tick(1000)
 
