@@ -46,6 +46,7 @@ def main():
     clock = pg.time.Clock()
     bg_img = pg.image.load("fig/pg_bg.jpg")#
     kk_img = pg.image.load("fig/3.png")
+    kk_img2 = pg.image.load("fig/4.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     tmr = 0
 
@@ -90,14 +91,17 @@ def main():
             vx *= -1
         if not tate:
             vy *= -1
-        screen.blit(kk_img, kk_rct)
+        if kk_rct.colliderect(bb_rect):
+            screen.blit(kk_img2,kk_rct)
+            clock.tick(0.1)
+            return
+        else:
+            screen.blit(kk_img, kk_rct)
         avx = vx*accs[min(tmr//1000, 9)]
         avy = vy*accs[min(tmr//1000, 9)]
         bb_img = bb_imgs[min(tmr//1000, 9)]
         bb_rect.move_ip(avx,avy)
         screen.blit(bb_img,bb_rect)
-        if kk_rct.colliderect(bb_rect):
-            return
         pg.display.update()
         clock.tick(1000)
 
