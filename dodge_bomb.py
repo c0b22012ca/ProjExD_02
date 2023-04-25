@@ -61,8 +61,13 @@ def main():
     vy = +1
     bb_rect = bb_img.get_rect()#rectクラスの生成と値ゲット
     bb_rect.center = bb_x,bb_y#rectクラスのcenterインスタンスの変更
-
-    
+    accs = [a for a in range(1,11) ]
+    bb_imgs = []
+    for r in range(1,11) :
+        bb_img = pg.Surface((20*r, 20*r))
+        bb_img.set_colorkey((0,0,0))
+        pg.draw.circle(bb_img, (255,0,0), (10*r, 10*r), 10*r)
+        bb_imgs.append(bb_img)
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -74,21 +79,22 @@ def main():
         for k,v in de.items():#kが押されたキー、ｖが移動方向
             if key_lst[k]:
                 kk_rct.move_ip(v)#移動
-                for mk,mv in de2.items():
-                    if (v[0],v[1]) == mk:
-                        kk_img2=mv
-                        screen.blit(kk_img2, kk_rct)
-                        
+
         if check_bound(screen.get_rect(),kk_rct) != (True,True):
              for k,v in de.items():#kが押されたキー、ｖが移動方向
                 if key_lst[k]:
                     kk_rct.move_ip(-v[0], -v[1])#移動
-        bb_rect.move_ip(vx,vy)#移動の
+        #
         yoko , tate = check_bound(screen.get_rect(),bb_rect)
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1
+        screen.blit(kk_img, kk_rct)
+        avx = vx*accs[min(tmr//1000, 9)]
+        avy = vy*accs[min(tmr//1000, 9)]
+        bb_img = bb_imgs[min(tmr//1000, 9)]
+        bb_rect.move_ip(avx,avy)
         screen.blit(bb_img,bb_rect)
         if kk_rct.colliderect(bb_rect):
             return
